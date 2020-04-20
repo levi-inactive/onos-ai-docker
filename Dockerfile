@@ -18,6 +18,13 @@ ENV BUILD_DEPS \
     curl \
     unzip
 RUN apt-get update && apt-get install -y ${BUILD_DEPS}
+	
+# Copied from Weka's Dockerfile at https://github.com/jamesmstone/dockerfiles/blob/master/weka/Dockerfile
+FROM java:latest
+ADD	http://www.cs.waikato.ac.nz/~ml/weka/snapshots/stable-3-8.zip ./weka.zip
+RUN	unzip ./weka.zip \
+	&& rm ./weka.zip
+CMD	["java","-jar","/weka/weka.jar"]
 
 # Install Bazel
 ARG BAZEL_VER
