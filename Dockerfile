@@ -7,6 +7,8 @@ ARG PROFILE=default
 # zulu-openjdk images are based on Ubuntu.
 FROM azul/zulu-openjdk:${JDK_VER} as builder
 
+COPY process-ables/  /root/onos/apache-karaf-4.2.6/
+
 ENV BUILD_DEPS \
     ca-certificates \
     zip \
@@ -18,13 +20,6 @@ ENV BUILD_DEPS \
     curl \
     unzip
 RUN apt-get update && apt-get install -y ${BUILD_DEPS}
-	
-# Copied from Weka's Dockerfile at https://github.com/jamesmstone/dockerfiles/blob/master/weka/Dockerfile
-FROM java:latest
-ADD	http://www.cs.waikato.ac.nz/~ml/weka/snapshots/stable-3-8.zip ./weka.zip
-RUN	unzip ./weka.zip \
-	&& rm ./weka.zip
-CMD	["java","-jar","/weka/weka.jar"]
 
 # Install Bazel
 ARG BAZEL_VER
